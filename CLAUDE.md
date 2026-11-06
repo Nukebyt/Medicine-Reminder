@@ -5,7 +5,7 @@ App name: **Medicine Reminder**. Package `com.nukebyt.medicinereminder`. Logo: `
 ## Stack
 Kotlin, Jetpack Compose, Material 3, Hilt, Room (KSP), DataStore, Navigation Compose.
 minSdk 26, targetSdk 36, compileSdk 37 (current AndroidX needs it). java.time everywhere.
-AGP 9 (built-in Kotlin; there is no kotlin-android plugin). Gradle wrapper 9.8.2.
+AGP 9.4.0 (the newest version Android Studio here supports; built-in Kotlin; there is no kotlin-android plugin). Gradle wrapper 9.8.2.
 
 ## Commands
 - Build: ./gradlew assembleDebug
