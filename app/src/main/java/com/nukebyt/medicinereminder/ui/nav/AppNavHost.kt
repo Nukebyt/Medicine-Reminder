@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import com.nukebyt.medicinereminder.ui.medicines.EditMedicineScreen
 import com.nukebyt.medicinereminder.ui.medicines.MedicineListScreen
+import com.nukebyt.medicinereminder.ui.today.TodayScreen
 import com.nukebyt.medicinereminder.ui.util.SnackbarController
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -125,7 +126,9 @@ fun AppNavHost(snackbarController: SnackbarController) {
             startDestination = TodayRoute,
             modifier = Modifier.padding(innerPadding).consumeWindowInsets(innerPadding),
         ) {
-            composable<TodayRoute> { Placeholder("Today") }
+            composable<TodayRoute> {
+                TodayScreen(onAddMedicine = { navController.navigate(EditMedicineRoute()) })
+            }
             composable<MedicinesRoute> {
                 MedicineListScreen(
                     onAdd = { navController.navigate(EditMedicineRoute()) },

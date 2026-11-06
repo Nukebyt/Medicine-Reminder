@@ -33,21 +33,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.domain.model.DaySummary
+import com.nukebyt.medicinereminder.domain.weekStartOf
 import com.nukebyt.medicinereminder.ui.theme.AppShapes
 import com.nukebyt.medicinereminder.ui.theme.AppTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 private const val PAST_WEEKS = 156
 private const val FUTURE_WEEKS = 52
 private const val MAX_DOTS = 5
 
-fun weekStartOf(date: LocalDate, first: DayOfWeek = DayOfWeek.MONDAY): LocalDate =
-    date.with(TemporalAdjusters.previousOrSame(first))
+/** Page index of the week containing [date], for scrolling the pager (today's week is page [PAST_WEEKS]). */
+fun weekPageOf(today: LocalDate, date: LocalDate): Int =
+    (PAST_WEEKS + ChronoUnit.WEEKS.between(weekStartOf(today), weekStartOf(date)).toInt()).coerceIn(0, PAST_WEEKS + FUTURE_WEEKS)
 
 /**
  * Week pager with weekday + date number, and a tiny row of dots per day (filled = taken).
@@ -68,8 +69,8 @@ fun WeekStrip(
 
     // Follow external selection changes (e.g. the "Today" chip) by scrolling to that week.
     LaunchedEffect(selectedDate) {
-        val target = PAST_WEEKS + ChronoUnit.WEEKS.between(base, weekStartOf(selectedDate)).toInt()
-        if (target in 0 until PAST_WEEKS + FUTURE_WEEKS + 1 && target != pagerState.currentPage) {
+        val target = weekPageOf(today, selectedDate)
+        if (target != pagerState.currentPage) {
             pagerState.animateScrollToPage(target)
         }
     }
@@ -97,9 +98,7 @@ fun WeekStrip(
 
 @Composable
 fun rememberWeekPagerState(today: LocalDate, selected: LocalDate): PagerState {
-    val base = weekStartOf(today)
-    val initial = (PAST_WEEKS + ChronoUnit.WEEKS.between(base, weekStartOf(selected)).toInt()).coerceIn(0, PAST_WEEKS + FUTURE_WEEKS)
-    return rememberPagerState(initialPage = initial) { PAST_WEEKS + FUTURE_WEEKS + 1 }
+    return rememberPagerState(initialPage = weekPageOf(today, selected)) { PAST_WEEKS + FUTURE_WEEKS + 1 }
 }
 
 @Composable

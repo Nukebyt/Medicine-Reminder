@@ -26,9 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.domain.model.DoseState
 import com.nukebyt.medicinereminder.ui.theme.AppShapes
 import com.nukebyt.medicinereminder.ui.theme.AppTheme
@@ -77,8 +75,7 @@ private fun BlisterCell(state: DoseState) {
 /** "3 of 5 taken today" card with the blister strip and the next dose. */
 @Composable
 fun BlisterSummaryCard(
-    taken: Int,
-    total: Int,
+    title: String,
     states: List<DoseState>,
     nextText: String?,
     modifier: Modifier = Modifier,
@@ -87,8 +84,7 @@ fun BlisterSummaryCard(
     Surface(modifier.fillMaxWidth(), shape = AppShapes.card, color = colors.foil) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(
-                text = if (total > 0 && taken == total) stringResource(R.string.summary_all_done)
-                else stringResource(R.string.summary_taken_today, taken, total),
+                text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = colors.ink,
             )
@@ -105,10 +101,10 @@ fun BlisterSummaryCard(
 private fun BlisterSummaryCardPreview() = PreviewSurface {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         BlisterSummaryCard(
-            taken = 3, total = 5,
+            title = "3 of 5 taken today",
             states = listOf(DoseState.TAKEN, DoseState.TAKEN, DoseState.TAKEN_LATE, DoseState.OVERDUE, DoseState.UPCOMING),
             nextText = "Next: Vitamin D · 9:00 pm",
         )
-        BlisterSummaryCard(taken = 2, total = 2, states = listOf(DoseState.TAKEN, DoseState.TAKEN), nextText = null)
+        BlisterSummaryCard(title = "All done for today", states = listOf(DoseState.TAKEN, DoseState.TAKEN), nextText = null)
     }
 }

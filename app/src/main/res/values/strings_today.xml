@@ -1,0 +1,7 @@
+<resources>
+    <string name="summary_taken">%1$d of %2$d taken</string>
+    <string name="confirm_past_title">Mark as taken for %1$s?</string>
+    <string name="confirm_past_message">%1$s at %2$s will be logged as taken.</string>
+    <string name="confirm_past_action">Mark as taken</string>
+    <string name="future_day_note">You can mark these doses once the day arrives.</string>
+</resources>
