@@ -1,3 +1,81 @@
 <resources>
     <string name="app_name">Medicine Reminder</string>
+
+    <!-- Navigation -->
+    <string name="nav_today">Today</string>
+    <string name="nav_medicines">Medicines</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Meal relation -->
+    <string name="meal_before_meal">Before meal</string>
+    <string name="meal_after_meal">After meal</string>
+    <string name="meal_with_meal">With meal</string>
+    <string name="meal_empty_stomach">Empty stomach</string>
+    <string name="meal_any_time">Any time</string>
+
+    <!-- Medicine form -->
+    <string name="form_tablet">Tablet</string>
+    <string name="form_capsule">Capsule</string>
+    <string name="form_syrup">Syrup</string>
+    <string name="form_drops">Drops</string>
+    <string name="form_injection">Injection</string>
+    <string name="form_inhaler">Inhaler</string>
+    <string name="form_cream">Cream</string>
+    <string name="form_other">Other</string>
+
+    <!-- Dose status lines -->
+    <string name="dose_upcoming">Upcoming</string>
+    <string name="dose_overdue_min">Overdue by %1$d min</string>
+    <string name="dose_overdue_hours">Overdue by %1$d h %2$d min</string>
+    <string name="dose_taken_at">Taken at %1$s</string>
+    <string name="dose_taken_late_at">Taken late at %1$s</string>
+    <string name="dose_skipped">Skipped</string>
+    <string name="dose_missed">Missed</string>
+
+    <!-- Dose accessibility -->
+    <string name="dose_a11y_summary">%1$s %2$s, %3$s, %4$s</string>
+    <string name="dose_a11y_state_taken">Taken</string>
+    <string name="dose_a11y_state_not_taken">Not taken</string>
+    <string name="dose_toggle_a11y">%1$s, %2$s</string>
+    <string name="dose_toggle_future_hint">Future doses cannot be marked yet</string>
+
+    <!-- Summary card -->
+    <string name="summary_taken_today">%1$d of %2$d taken today</string>
+    <string name="summary_next">Next: %1$s · %2$s</string>
+    <string name="summary_all_done">All done for today</string>
+
+    <!-- Week strip -->
+    <string name="week_day_a11y">%1$s, %2$d of %3$d taken</string>
+    <string name="week_day_a11y_none">%1$s, no doses</string>
+    <string name="week_today_chip">Today</string>
+
+    <!-- Empty states -->
+    <string name="empty_medicines_title">No medicines yet</string>
+    <string name="empty_medicines_message">Add your first one to start getting reminders.</string>
+    <string name="add_medicine">Add medicine</string>
+    <string name="empty_day_title">Nothing scheduled</string>
+    <string name="empty_day_message">No doses are planned for this day.</string>
+
+    <!-- Sections -->
+    <string name="section_morning">Morning</string>
+    <string name="section_afternoon">Afternoon</string>
+    <string name="section_evening">Evening</string>
+    <string name="section_night">Night</string>
+
+    <!-- Greetings -->
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+
+    <!-- Common -->
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_save">Save</string>
 </resources>

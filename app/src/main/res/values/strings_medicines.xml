@@ -1,0 +1,70 @@
+<resources>
+    <!-- Edit medicine -->
+    <string name="edit_title_add">Add medicine</string>
+    <string name="edit_title_edit">Edit medicine</string>
+    <string name="edit_name">Medicine name</string>
+    <string name="edit_dosage_amount">Dosage</string>
+    <string name="edit_dosage_unit">Unit</string>
+    <string name="edit_form">Form</string>
+    <string name="edit_meal">When to take it</string>
+    <string name="edit_meal_more">More</string>
+    <string name="edit_times">Times</string>
+    <string name="edit_add_time">Add time</string>
+    <string name="edit_remove_time">Remove %1$s</string>
+    <string name="edit_quick_morning">Morning %1$s</string>
+    <string name="edit_quick_afternoon">Afternoon %1$s</string>
+    <string name="edit_quick_night">Night %1$s</string>
+    <string name="edit_repeat">Repeat</string>
+    <string name="edit_every_day">Every day</string>
+    <string name="edit_specific_days">Specific days</string>
+    <string name="edit_start_date">Start date</string>
+    <string name="edit_end">End</string>
+    <string name="edit_end_ongoing">Ongoing</string>
+    <string name="edit_end_date">Until a date</string>
+    <string name="edit_end_days">For a number of days</string>
+    <string name="edit_end_date_label">End date</string>
+    <string name="edit_duration_days">Number of days</string>
+    <string name="edit_color">Colour tag</string>
+    <string name="edit_color_selected">%1$s, selected</string>
+    <string name="edit_notes">Notes</string>
+    <string name="edit_save">Save medicine</string>
+    <string name="edit_time_picker_title">Select time</string>
+    <string name="edit_unit_picker_a11y">Choose unit</string>
+
+    <!-- Colour names -->
+    <string name="color_blue">Blue</string>
+    <string name="color_mint">Mint</string>
+    <string name="color_amber">Amber</string>
+    <string name="color_coral">Coral</string>
+    <string name="color_violet">Violet</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_rose">Rose</string>
+    <string name="color_slate">Slate</string>
+
+    <!-- Validation -->
+    <string name="error_name_required">Enter the medicine name</string>
+    <string name="error_time_required">Add at least one time</string>
+    <string name="error_duplicate_time">That time is already added</string>
+    <string name="error_end_before_start">End date must be on or after the start date</string>
+    <string name="error_no_days">Choose at least one day</string>
+    <string name="error_duration_invalid">Enter a number of days from 1 to 3650</string>
+
+    <!-- Save messages -->
+    <string name="saved_plain">%1$s saved.</string>
+    <string name="saved_with_next">%1$s saved. Next reminder %2$s.</string>
+    <string name="next_today">at %1$s</string>
+    <string name="next_tomorrow">tomorrow at %1$s</string>
+    <string name="next_on_date">on %1$s at %2$s</string>
+
+    <!-- Medicines list -->
+    <string name="list_title">Medicines</string>
+    <string name="list_group_active">Active</string>
+    <string name="list_group_paused">Paused</string>
+    <string name="list_group_finished">Finished</string>
+    <string name="list_times_meal">%1$s · %2$s</string>
+    <string name="list_deleted">%1$s deleted</string>
+    <string name="list_more_options">More options for %1$s</string>
+    <string name="list_paused_snack">%1$s paused</string>
+    <string name="list_resumed_snack">%1$s resumed</string>
+
+</resources>
