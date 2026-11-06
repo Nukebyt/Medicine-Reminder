@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,6 +33,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nukebyt.medicinereminder.ui.util.currentLocale
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.domain.TimeOfDay
 import com.nukebyt.medicinereminder.domain.model.DoseUi
@@ -165,14 +167,15 @@ fun TodayContent(
                 targetState = state.selectedDate,
                 animationSpec = tween(if (animate) 220 else 0),
                 label = "day",
-            ) {
-                DoseList(state, onToggle)
+            ) { date ->
+                // Only the current day has data; the outgoing day fades out as an empty block.
+                if (date == state.selectedDate) DoseList(state, onToggle) else Spacer(Modifier.fillMaxWidth())
             }
         }
     }
 
     state.confirmPast?.let { dose ->
-        val dateText = dose.date.format(DateTimeFormatter.ofPattern("EEE d MMM", Locale.getDefault()))
+        val dateText = dose.date.format(DateTimeFormatter.ofPattern("EEE d MMM", currentLocale()))
         AlertDialog(
             onDismissRequest = onDismissConfirm,
             title = { Text(stringResource(R.string.confirm_past_title, dateText)) },
@@ -198,7 +201,7 @@ private fun Header(state: TodayUiState) {
             modifier = Modifier.semantics { heading() },
         )
         Text(
-            text = state.today.format(DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.getDefault())),
+            text = state.today.format(DateTimeFormatter.ofPattern("EEEE, d MMMM", currentLocale())),
             style = MaterialTheme.typography.bodyLarge,
             color = AppTheme.colors.muted,
         )

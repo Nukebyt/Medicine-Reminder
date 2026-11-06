@@ -109,7 +109,7 @@ fun CapsuleToggle(
         ) {
             Box(
                 Modifier
-                    .offset(x = thumbX - 2.dp, y = 2.dp)
+                    .offset { androidx.compose.ui.unit.IntOffset((thumbX - 2.dp).roundToPx(), 2.dp.roundToPx()) }
                     .size(ThumbSize)
                     .background(thumbColor, AppShapes.cell),
                 contentAlignment = Alignment.Center,

@@ -8,7 +8,6 @@ import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
@@ -19,6 +18,7 @@ import android.os.VibratorManager
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import androidx.core.net.toUri
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.data.prefs.AppSettings
 import com.nukebyt.medicinereminder.data.prefs.SettingsRepository
@@ -175,12 +175,15 @@ class AlarmService : Service() {
     // ---- foreground ----
 
     private fun enterForeground(notification: android.app.Notification): Boolean {
-        // systemExempted needs the exact-alarm permission; without it fall back to mediaPlayback.
-        val preferred = if (scheduler.canScheduleExact()) ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED else ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-        val fallback = ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-        for (type in listOf(preferred, fallback).distinct()) {
+        // Foreground service types only exist from API 29, and systemExempted only from API 34 (and needs the
+        // exact-alarm permission). Everywhere else fall back to mediaPlayback, then to no type at all.
+        val candidates = buildList {
+            if (Build.VERSION.SDK_INT >= 34 && scheduler.canScheduleExact()) add(ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
+            if (Build.VERSION.SDK_INT >= 29) add(ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK) else add(0)
+        }
+        for (type in candidates) {
             try {
-                ServiceCompat.startForeground(this, AlarmContract.NOTIF_ALARM, notification, if (Build.VERSION.SDK_INT >= 29) type else 0)
+                ServiceCompat.startForeground(this, AlarmContract.NOTIF_ALARM, notification, type)
                 return true
             } catch (e: Exception) {
                 AppLog.w("startForeground failed for type $type", e)
@@ -215,7 +218,7 @@ class AlarmService : Service() {
             val mp = MediaPlayer()
             try {
                 mp.setAudioAttributes(alarmAttributes())
-                mp.setDataSource(this, Uri.parse(custom))
+                mp.setDataSource(this, custom.toUri())
                 return mp
             } catch (e: Exception) {
                 AppLog.w("custom alarm sound unavailable, using the built-in beep", e)

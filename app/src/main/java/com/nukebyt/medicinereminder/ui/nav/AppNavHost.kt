@@ -38,11 +38,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.alarm.PermissionStatus
+import com.nukebyt.medicinereminder.ui.history.HistoryScreen
 import com.nukebyt.medicinereminder.ui.medicines.EditMedicineScreen
 import com.nukebyt.medicinereminder.ui.medicines.MedicineListScreen
 import com.nukebyt.medicinereminder.ui.onboarding.OnboardingScreen
 import com.nukebyt.medicinereminder.ui.onboarding.PermissionBanner
 import com.nukebyt.medicinereminder.ui.theme.AppTheme
+import com.nukebyt.medicinereminder.ui.settings.SettingsScreen
 import com.nukebyt.medicinereminder.ui.today.TodayScreen
 import com.nukebyt.medicinereminder.ui.util.SnackbarController
 import kotlinx.serialization.Serializable
@@ -151,8 +153,20 @@ fun AppNavHost(
                     onEdit = { navController.navigate(EditMedicineRoute(it)) },
                 )
             }
-            composable<HistoryRoute> { Placeholder("History") }
-            composable<SettingsRoute> { Placeholder("Settings") }
+            composable<HistoryRoute> {
+                HistoryScreen(
+                    onOpenDay = {
+                        navController.navigate(TodayRoute) {
+                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                )
+            }
+            composable<SettingsRoute> {
+                SettingsScreen(onOpenHealthCheck = { navController.navigate(OnboardingRoute()) })
+            }
             composable<EditMedicineRoute> {
                 EditMedicineScreen(onBack = { navController.popBackStack() })
             }

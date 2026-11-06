@@ -6,6 +6,18 @@ Drop this file in the repo root as `ROADMAP.md` and point Claude Code at it phas
 
 ---
 
+## Build status (updated 2026-11-06)
+
+Code for phases 0 to 8 is written and committed. Verified so far: `./gradlew lintDebug testDebugUnitTest assembleDebug assembleRelease` all pass (R8 release build included).
+
+**Not yet verified on a device or emulator** (none was available when this was built): everything in section 9, the manual matrix, above all reminders, the escalation alarm, lock-screen behaviour, silent mode, Doze, reboot and time-zone change. The instrumented Room tests in `app/src/androidTest` compile but have not been run (`./gradlew connectedDebugAndroidTest`).
+
+Known gaps: month-calendar expansion on Today (stretch goal) is not built; the release keystore is not created (copy the template in section 14 notes: put `keystore.properties` with `storeFile`, `storePassword`, `keyAlias`, `keyPassword` in the repo root, never commit it); a reminder missed while the phone was switched off is not re-posted after boot; the TalkBack and 200% font walkthrough in Phase 8 still needs a human pass.
+
+Deviations from this spec: alarm sounds are WAV files (`res/raw/alarm_beep.wav`, `reminder_chime.wav`) generated for the project, not `.ogg`; `SwipeToStop` uses `Modifier.draggable` with the same 85% rule instead of `anchoredDraggable`; compileSdk is 37 because current AndroidX libraries require it (targetSdk stays 36); the fonts are variable fonts (one file each).
+
+---
+
 ## 1. Scope
 
 ### MVP (what "fully usable" means)

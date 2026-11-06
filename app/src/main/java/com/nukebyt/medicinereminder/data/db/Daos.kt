@@ -45,6 +45,10 @@ interface MedicineDao {
     @Query("DELETE FROM medicines WHERE id = :id")
     suspend fun deleteById(id: Long)
 
+    /** Removes every medicine; times and dose logs cascade. Used by import (replace all). */
+    @Query("DELETE FROM medicines")
+    suspend fun deleteAll()
+
     /** Distinct slots of medicines that can ring (not paused). */
     @Query(
         "SELECT DISTINCT t.time FROM schedule_times t JOIN medicines m ON m.id = t.medicineId " +

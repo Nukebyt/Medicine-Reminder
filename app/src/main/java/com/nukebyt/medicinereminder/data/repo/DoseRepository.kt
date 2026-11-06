@@ -47,6 +47,13 @@ class DoseRepository @Inject constructor(
             DoseResolver.summarizeRange(dates, now, meds.map { it.toDomain() }, logs.map { it.toDomain() })
         }.distinctUntilChanged()
 
+    /** Every dose from [from] to [to] inclusive, for the history screen. */
+    fun observeDosesBetween(from: LocalDate, to: LocalDate): Flow<List<DoseUi>> =
+        combine(medicineDao.observeAll(), logDao.observeBetween(from, to), ticker.ticks()) { meds, logs, now ->
+            val dates = generateSequence(from) { it.plusDays(1) }.takeWhile { !it.isAfter(to) }.asIterable()
+            DoseResolver.resolveRange(dates, now, meds.map { it.toDomain() }, logs.map { it.toDomain() })
+        }.distinctUntilChanged()
+
     suspend fun dosesFor(date: LocalDate): List<DoseUi> {
         val meds = medicineDao.getAll().map { it.toDomain() }
         val logs = logDao.getForDate(date).map { it.toDomain() }

@@ -37,8 +37,6 @@
     <string name="dose_a11y_summary">%1$s %2$s, %3$s, %4$s</string>
     <string name="dose_a11y_state_taken">Taken</string>
     <string name="dose_a11y_state_not_taken">Not taken</string>
-    <string name="dose_toggle_a11y">%1$s, %2$s</string>
-    <string name="dose_toggle_future_hint">Future doses cannot be marked yet</string>
 
     <!-- Summary card -->
     <string name="summary_taken_today">%1$d of %2$d taken today</string>
@@ -77,5 +75,4 @@
     <string name="action_edit">Edit</string>
     <string name="action_pause">Pause</string>
     <string name="action_resume">Resume</string>
-    <string name="action_save">Save</string>
 </resources>

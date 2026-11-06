@@ -79,6 +79,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nukebyt.medicinereminder.ui.util.currentLocale
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.domain.MedicineFormError
 import com.nukebyt.medicinereminder.domain.model.DaysMask
@@ -322,7 +323,7 @@ private fun EditMedicineForm(state: EditMedicineUiState, vm: EditMedicineViewMod
                         FilterChip(
                             selected = DaysMask.contains(state.daysMask, day),
                             onClick = { vm.toggleDay(day) },
-                            label = { Text(day.getDisplayName(TextStyle.SHORT, Locale.getDefault())) },
+                            label = { Text(day.getDisplayName(TextStyle.SHORT, currentLocale())) },
                         )
                     }
                 }

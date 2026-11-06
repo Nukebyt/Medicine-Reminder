@@ -25,11 +25,9 @@
     <string name="edit_end_date_label">End date</string>
     <string name="edit_duration_days">Number of days</string>
     <string name="edit_color">Colour tag</string>
-    <string name="edit_color_selected">%1$s, selected</string>
     <string name="edit_notes">Notes</string>
     <string name="edit_save">Save medicine</string>
     <string name="edit_time_picker_title">Select time</string>
-    <string name="edit_unit_picker_a11y">Choose unit</string>
 
     <!-- Colour names -->
     <string name="color_blue">Blue</string>

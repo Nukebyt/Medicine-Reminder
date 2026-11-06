@@ -1,5 +1,6 @@
 package com.nukebyt.medicinereminder.alarm
 
+import androidx.core.net.toUri
 import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationManager
@@ -47,7 +48,7 @@ object Permissions {
         )
     }
 
-    private fun packageUri(context: Context) = Uri.parse("package:${context.packageName}")
+    private fun packageUri(context: Context) = "package:${context.packageName}".toUri()
 
     fun notificationSettingsIntent(context: Context): Intent =
         Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)

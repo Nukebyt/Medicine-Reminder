@@ -31,6 +31,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.nukebyt.medicinereminder.ui.util.currentLocale
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.domain.model.DaySummary
 import com.nukebyt.medicinereminder.domain.weekStartOf
@@ -111,7 +112,7 @@ private fun DayCell(
     modifier: Modifier = Modifier,
 ) {
     val colors = AppTheme.colors
-    val weekday = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+    val weekday = date.dayOfWeek.getDisplayName(TextStyle.SHORT, currentLocale())
     val fullName = date.format(java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.FULL))
     val total = summary?.total ?: 0
     val description = if (total > 0) {

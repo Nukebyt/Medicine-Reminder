@@ -5,6 +5,7 @@ import android.provider.Settings
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import com.nukebyt.medicinereminder.R
 import com.nukebyt.medicinereminder.domain.model.MealRelation
@@ -55,3 +56,7 @@ fun animationsEnabled(context: Context): Boolean = try {
 } catch (_: Exception) {
     true
 }
+
+/** The current locale, observed through the configuration so composables update when it changes. */
+@Composable
+fun currentLocale(): Locale = LocalConfiguration.current.locales[0]

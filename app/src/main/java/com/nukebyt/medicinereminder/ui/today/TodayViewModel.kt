@@ -14,7 +14,9 @@ import com.nukebyt.medicinereminder.domain.model.DaySummary
 import com.nukebyt.medicinereminder.domain.model.DoseState
 import com.nukebyt.medicinereminder.domain.model.DoseUi
 import com.nukebyt.medicinereminder.domain.weekStartOf
+import com.nukebyt.medicinereminder.ui.util.DateJump
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -62,7 +64,17 @@ class TodayViewModel @Inject constructor(
     medicines: MedicineRepository,
     ticker: MinuteTicker,
     private val time: TimeSource,
+    private val dateJump: DateJump,
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            dateJump.requested.filterNotNull().collect { date ->
+                selectDate(date)
+                dateJump.consume()
+            }
+        }
+    }
 
     private val selectedDate = savedStateHandle.getStateFlow(KEY_SELECTED, time.now().toLocalDate().toEpochDay())
         .map(LocalDate::ofEpochDay)

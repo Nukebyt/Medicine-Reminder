@@ -1,5 +1,6 @@
 package com.nukebyt.medicinereminder.alarm
 
+import androidx.core.net.toUri
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -35,7 +36,7 @@ class ReminderNotifier @Inject constructor(
      * use a new channel id or uninstall the app (ROADMAP section 4).
      */
     fun createChannels() {
-        val chime = Uri.parse("android.resource://${context.packageName}/${R.raw.reminder_chime}")
+        val chime = "android.resource://${context.packageName}/${R.raw.reminder_chime}".toUri()
         val reminders = NotificationChannel(
             AlarmContract.CHANNEL_REMINDERS,
             context.getString(R.string.channel_reminders_name),

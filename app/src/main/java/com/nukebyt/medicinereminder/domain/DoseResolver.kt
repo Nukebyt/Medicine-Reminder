@@ -90,6 +90,17 @@ object DoseResolver {
         return DaySummary(taken, late, skipped, missed, pending)
     }
 
+    /** Every dose on every date in [dates], in date then time order. */
+    fun resolveRange(
+        dates: Iterable<LocalDate>,
+        now: ZonedDateTime,
+        medicines: List<Medicine>,
+        logs: List<DoseLog>,
+    ): List<DoseUi> {
+        val logsByDate = logs.groupBy { it.date }
+        return dates.flatMap { resolve(it, now, medicines, logsByDate[it].orEmpty()) }
+    }
+
     /** Summaries for every date in [dates]. */
     fun summarizeRange(
         dates: Iterable<LocalDate>,

@@ -1,6 +1,7 @@
 package com.nukebyt.medicinereminder.domain
 
 import com.nukebyt.medicinereminder.domain.model.DaySummary
+import com.nukebyt.medicinereminder.domain.model.DoseUi
 import java.time.LocalDate
 
 data class AdherenceStats(
@@ -15,7 +16,28 @@ data class AdherenceStats(
     val percent: Int? get() = if (countable == 0) null else (taken * 100) / countable
 }
 
+data class MedicineAdherence(
+    val medicineId: Long,
+    val name: String,
+    val colorIndex: Int,
+    val stats: AdherenceStats,
+)
+
 object Adherence {
+
+    /** Per-medicine breakdown of [doses], medicines with no countable doses left out, worst adherence first. */
+    fun perMedicine(doses: List<DoseUi>): List<MedicineAdherence> =
+        doses.groupBy { it.medicineId }
+            .map { (id, list) ->
+                MedicineAdherence(
+                    medicineId = id,
+                    name = list.first().medicineName,
+                    colorIndex = list.first().colorIndex,
+                    stats = stats(listOf(DoseResolver.summarize(list))),
+                )
+            }
+            .filter { it.stats.countable > 0 }
+            .sortedWith(compareBy({ it.stats.percent ?: 100 }, { it.name.lowercase() }))
 
     fun stats(days: Collection<DaySummary>): AdherenceStats =
         AdherenceStats(
