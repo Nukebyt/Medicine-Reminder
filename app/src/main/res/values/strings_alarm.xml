@@ -1,0 +1,31 @@
+<resources>
+    <!-- Notification channels -->
+    <string name="channel_reminders_name">Dose reminders</string>
+    <string name="channel_reminders_desc">A short chime when a dose is due</string>
+    <string name="channel_alarms_name">Dose alarms</string>
+    <string name="channel_alarms_desc">A looping alarm when a dose has not been taken after its reminder</string>
+    <string name="channel_missed_name">Missed doses</string>
+    <string name="channel_missed_desc">A note when an alarm ended without the dose being taken</string>
+
+    <!-- Reminder notification -->
+    <string name="notif_reminder_title">Time for your medicine</string>
+    <string name="notif_dose_line">%1$s · %2$s</string>
+    <string name="notif_more">%1$s and %2$d more</string>
+    <string name="notif_action_taken">Taken</string>
+    <string name="notif_action_snooze">Snooze %1$d min</string>
+
+    <!-- Missed notification -->
+    <string name="notif_missed_title">Missed dose</string>
+    <string name="notif_missed_single">You missed %1$s at %2$s. Check with your doctor or pharmacist before taking a late dose.</string>
+    <string name="notif_missed_multiple">You missed %1$s and %2$d more at %3$s. Check with your doctor or pharmacist before taking a late dose.</string>
+
+    <!-- Alarm -->
+    <string name="alarm_title">Time for your medicine</string>
+    <string name="alarm_took_it">I took it</string>
+    <string name="alarm_took_them">I took them</string>
+    <string name="alarm_snooze">Snooze %1$d min</string>
+    <string name="alarm_swipe_to_stop">Swipe to stop</string>
+    <string name="alarm_stop_a11y">Stop alarm</string>
+    <string name="alarm_action_stop">Stop</string>
+    <string name="alarm_action_took">I took it</string>
+</resources>

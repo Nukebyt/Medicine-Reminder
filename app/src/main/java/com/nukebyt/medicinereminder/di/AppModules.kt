@@ -2,6 +2,7 @@ package com.nukebyt.medicinereminder.di
 
 import android.content.Context
 import androidx.room.Room
+import com.nukebyt.medicinereminder.alarm.AlarmScheduler
 import com.nukebyt.medicinereminder.data.db.AppDatabase
 import com.nukebyt.medicinereminder.data.db.DoseLogDao
 import com.nukebyt.medicinereminder.data.db.MedicineDao
@@ -14,9 +15,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.time.LocalDate
-import java.time.LocalTime
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ApplicationScope
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -27,6 +34,9 @@ object DatabaseModule {
 
     @Provides fun medicineDao(db: AppDatabase): MedicineDao = db.medicineDao()
     @Provides fun doseLogDao(db: AppDatabase): DoseLogDao = db.doseLogDao()
+
+    @Provides @Singleton @ApplicationScope
+    fun applicationScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 }
 
 @Module
@@ -35,13 +45,8 @@ abstract class TimeModule {
     @Binds abstract fun timeSource(impl: SystemTimeSource): TimeSource
 }
 
-/** Temporary no-op until Phase 5 provides the AlarmManager-backed scheduler. */
 @Module
 @InstallIn(SingletonComponent::class)
-object AlarmModule {
-    @Provides @Singleton
-    fun reminderScheduler(): ReminderScheduler = object : ReminderScheduler {
-        override suspend fun rescheduleAll() = Unit
-        override suspend fun onSlotUpdated(date: LocalDate, slot: LocalTime, pendingCount: Int) = Unit
-    }
+abstract class AlarmModule {
+    @Binds abstract fun reminderScheduler(impl: AlarmScheduler): ReminderScheduler
 }
