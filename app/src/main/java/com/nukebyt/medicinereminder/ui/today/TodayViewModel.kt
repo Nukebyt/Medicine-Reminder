@@ -3,6 +3,7 @@ package com.nukebyt.medicinereminder.ui.today
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nukebyt.medicinereminder.data.prefs.SettingsRepository
 import com.nukebyt.medicinereminder.data.repo.DoseRepository
 import com.nukebyt.medicinereminder.data.repo.MedicineRepository
 import com.nukebyt.medicinereminder.data.time.MinuteTicker
@@ -46,6 +47,7 @@ data class TodayUiState(
     val hasAnyMedicine: Boolean = false,
     /** A past-day dose waiting for "Mark as taken for Wed 4 Nov?" confirmation. */
     val confirmPast: DoseUi? = null,
+    val userName: String = "",
 ) {
     val today: LocalDate get() = now.toLocalDate()
     val isToday: Boolean get() = selectedDate == today
@@ -65,6 +67,7 @@ class TodayViewModel @Inject constructor(
     ticker: MinuteTicker,
     private val time: TimeSource,
     private val dateJump: DateJump,
+    settings: SettingsRepository,
 ) : ViewModel() {
 
     init {
@@ -109,6 +112,7 @@ class TodayViewModel @Inject constructor(
     ) { now, selected, list, summary, hasMeds ->
         TodayUiState(isLoaded = true, now = now, selectedDate = selected, doses = list, summaries = summary, hasAnyMedicine = hasMeds)
     }.combine(confirmPast) { s, confirm -> s.copy(confirmPast = confirm) }
+        .combine(settings.settings.map { it.userName }) { s, name -> s.copy(userName = name) }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),

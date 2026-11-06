@@ -57,6 +57,7 @@ class SettingsViewModel @Inject constructor(
     fun setSound(uri: String?) = launch { repository.setAlarmSound(uri) }
     fun setRamp(on: Boolean) = launch { repository.setGradualVolume(on) }
     fun setVibrate(on: Boolean) = launch { repository.setVibrate(on) }
+    fun setUserName(name: String) = launch { repository.setUserName(name) }
     fun setTheme(mode: ThemeMode) = launch { repository.setTheme(mode) }
 
     // ---- export / import ----

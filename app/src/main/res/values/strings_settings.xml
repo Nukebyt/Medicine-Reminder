@@ -1,6 +1,12 @@
 <resources>
     <string name="settings_title">Settings</string>
 
+    <string name="settings_section_profile">Profile</string>
+    <string name="settings_name">Your name</string>
+    <string name="settings_name_empty">Not set</string>
+    <string name="settings_name_hint">Name shown in the greeting</string>
+    <string name="settings_name_save">Save</string>
+    <string name="settings_made_by">Made by Priyanuj Boruah</string>
     <string name="settings_section_alarm">Alarm</string>
     <string name="settings_section_appearance">Appearance</string>
     <string name="settings_section_reliability">Reliability</string>

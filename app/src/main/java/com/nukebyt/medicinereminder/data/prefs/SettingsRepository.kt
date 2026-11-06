@@ -29,6 +29,8 @@ data class AppSettings(
     val vibrate: Boolean = true,
     val theme: ThemeMode = ThemeMode.SYSTEM,
     val onboardingDone: Boolean = false,
+    /** Shown in the Today greeting ("Good evening, Priyanuj"). Empty means no name. */
+    val userName: String = "",
 )
 
 private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -46,6 +48,7 @@ class SettingsRepository @Inject constructor(
         val vibrate = booleanPreferencesKey("vibrate")
         val theme = stringPreferencesKey("theme")
         val onboardingDone = booleanPreferencesKey("onboarding_done")
+        val userName = stringPreferencesKey("user_name")
         val scheduledSlots = stringSetPreferencesKey("scheduled_slots")
     }
 
@@ -62,6 +65,7 @@ class SettingsRepository @Inject constructor(
             vibrate = p[Keys.vibrate] ?: defaults.vibrate,
             theme = p[Keys.theme]?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() } ?: defaults.theme,
             onboardingDone = p[Keys.onboardingDone] ?: defaults.onboardingDone,
+            userName = p[Keys.userName].orEmpty(),
         )
     }
 
@@ -74,6 +78,7 @@ class SettingsRepository @Inject constructor(
     suspend fun setGradualVolume(on: Boolean) = store.edit { it[Keys.ramp] = on }
     suspend fun setVibrate(on: Boolean) = store.edit { it[Keys.vibrate] = on }
     suspend fun setTheme(mode: ThemeMode) = store.edit { it[Keys.theme] = mode.name }
+    suspend fun setUserName(name: String) = store.edit { it[Keys.userName] = name.trim().take(40) }
     suspend fun setOnboardingDone(done: Boolean) = store.edit { it[Keys.onboardingDone] = done }
 
     /** Slots (minute of day) that currently have an alarm scheduled, so removed ones can be cancelled. */

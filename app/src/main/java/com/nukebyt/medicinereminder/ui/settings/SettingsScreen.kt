@@ -23,6 +23,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -102,6 +108,13 @@ fun SettingsScreen(
             modifier = Modifier.semantics { heading() },
         )
 
+        Section(R.string.settings_section_profile) {
+            ValueRow(
+                stringResource(R.string.settings_name),
+                settings.userName.ifBlank { stringResource(R.string.settings_name_empty) },
+            ) { dialog = Dialog.Name }
+        }
+
         Section(R.string.settings_section_alarm) {
             ValueRow(stringResource(R.string.settings_escalation), minutesLabel(settings.escalationDelayMin)) { dialog = Dialog.Escalation }
             ValueRow(stringResource(R.string.settings_snooze), minutesLabel(settings.snoozeMin)) { dialog = Dialog.Snooze }
@@ -152,11 +165,22 @@ fun SettingsScreen(
                 }
             }
         }
-        Spacer(Modifier.height(16.dp))
+        Text(
+            stringResource(R.string.settings_made_by),
+            style = MaterialTheme.typography.labelSmall,
+            color = colors.muted,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 24.dp),
+        )
     }
 
     // ---- dialogs ----
     when (dialog) {
+        Dialog.Name -> NameDialog(
+            initial = settings.userName,
+            onSave = { viewModel.setUserName(it); dialog = null },
+            onDismiss = { dialog = null },
+        )
         Dialog.Escalation -> ChoiceDialog(
             title = stringResource(R.string.settings_escalation),
             options = listOf(1, 3, 5, 10, 15, 0), selected = settings.escalationDelayMin, label = { minutesLabel(it) },
@@ -233,7 +257,7 @@ fun SettingsScreen(
 private fun minutesLabel(value: Int): String =
     if (value == 0) stringResource(R.string.settings_off) else stringResource(R.string.settings_minutes, value)
 
-private enum class Dialog { Escalation, Snooze, AutoStop, Theme, Sound }
+private enum class Dialog { Name, Escalation, Snooze, AutoStop, Theme, Sound }
 
 @Composable
 private fun Section(titleRes: Int, content: @Composable () -> Unit) {
@@ -278,6 +302,27 @@ private fun SwitchRow(title: String, checked: Boolean, onChange: (Boolean) -> Un
         Text(title, style = MaterialTheme.typography.bodyLarge, color = AppTheme.colors.ink, modifier = Modifier.weight(1f))
         Switch(checked = checked, onCheckedChange = null)
     }
+}
+
+@Composable
+private fun NameDialog(initial: String, onSave: (String) -> Unit, onDismiss: () -> Unit) {
+    var text by remember { mutableStateOf(initial) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.settings_name)) },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it.take(40) },
+                label = { Text(stringResource(R.string.settings_name_hint)) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { onSave(text) }),
+            )
+        },
+        confirmButton = { TextButton(onClick = { onSave(text) }) { Text(stringResource(R.string.settings_name_save)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
+    )
 }
 
 @Composable

@@ -195,7 +195,8 @@ private fun Header(state: TodayUiState) {
     }
     Column(Modifier.padding(top = 8.dp)) {
         Text(
-            text = stringResource(greeting),
+            text = if (state.userName.isBlank()) stringResource(greeting)
+            else stringResource(R.string.greeting_with_name, stringResource(greeting), state.userName),
             style = MaterialTheme.typography.headlineMedium,
             color = AppTheme.colors.ink,
             modifier = Modifier.semantics { heading() },
