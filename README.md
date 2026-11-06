@@ -46,9 +46,19 @@
 
 ## Download and install
 
-There is no Play Store listing and no ready-made APK in this repository yet, so you build the app from source. It takes a few minutes.
+### Quick way: install the APK
 
-### 1. Get the code
+1. Open the [latest release](https://github.com/Nukebyt/Medicine-Reminder/releases/latest) on your Android phone and download **Medicine-Reminder-v1.0.apk**.
+2. Open the downloaded file. Android will ask you to allow installing apps from your browser or file manager; allow it for this install.
+3. Open **Medicine Reminder** and follow the permission steps (see [How to use it](#how-to-use-it)).
+
+This APK is signed with the standard Android debug key, so it is not a Play Store build, and it includes the **Debug tools** section in Settings. Your phone may show a warning about installing from outside the Play Store; that is expected.
+
+### Build it yourself
+
+Prefer to build from source? It takes a few minutes.
+
+#### 1. Get the code
 
 ```bash
 git clone https://github.com/Nukebyt/Medicine-Reminder.git
@@ -56,18 +66,18 @@ git clone https://github.com/Nukebyt/Medicine-Reminder.git
 
 Or click **Code → Download ZIP** on the GitHub page and unzip it.
 
-### 2. Open it in Android Studio
+#### 2. Open it in Android Studio
 
 1. Choose **File → Open** and select the `Medicine-Reminder` folder.
 2. Wait for the Gradle sync to finish (the progress bar at the bottom). The first sync downloads dependencies and can take a while.
 3. If Android Studio asks to install a missing SDK platform, accept.
 
-### 3a. Run on an emulator
+#### 3a. Run on an emulator
 
 1. Open **Device Manager** and create a device: for example **Pixel 8** with an **API 36** system image.
 2. Choose that device in the toolbar and press the green **Run** button.
 
-### 3b. Run on your own phone
+#### 3b. Run on your own phone
 
 1. On the phone, open **Settings → About phone** and tap **Build number** seven times to enable Developer options.
 2. In **Developer options**, turn on **USB debugging**, then connect the phone with a cable and allow the prompt on the phone.
@@ -79,7 +89,7 @@ Prefer the terminal? With a phone or emulator connected:
 ./gradlew installDebug
 ```
 
-To get an APK file you can copy to a phone, run `./gradlew assembleDebug`. The file is created at `app/build/outputs/apk/debug/app-debug.apk`. Copy it to the phone and open it (you will need to allow installing from that source).
+To make your own APK file, run `./gradlew assembleDebug`. The file is created at `app/build/outputs/apk/debug/app-debug.apk`. Copy it to the phone and open it (you will need to allow installing from that source).
 
 ## How to use it
 
