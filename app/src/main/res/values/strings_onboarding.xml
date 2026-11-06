@@ -1,0 +1,66 @@
+<resources>
+    <string name="onboarding_title">Set up reminders</string>
+    <string name="onboarding_intro">A few quick steps so every dose reaches you on time.</string>
+    <string name="health_check_title">Reminder health check</string>
+
+    <string name="step_notifications_title">Notifications</string>
+    <string name="step_notifications_why">Allow notifications so reminders can reach you.</string>
+    <string name="step_alarms_title">Alarms and reminders</string>
+    <string name="step_alarms_why">Allow alarms and reminders so doses ring on time, even in battery saver.</string>
+    <string name="step_fullscreen_title">Full-screen alarms</string>
+    <string name="step_fullscreen_why">Allow full-screen alarms so a missed dose can wake the screen.</string>
+    <string name="step_battery_title">Battery restrictions</string>
+    <string name="step_battery_why">Turn off battery restrictions for Medicine Reminder so your phone does not stop reminders.</string>
+
+    <string name="step_allow">Allow</string>
+    <string name="step_open_settings">Open settings</string>
+    <string name="step_status_allowed">Allowed</string>
+    <string name="step_status_needed">Needs your attention</string>
+    <string name="step_status_a11y">%1$s: %2$s</string>
+
+    <string name="oem_title">Extra steps for your phone</string>
+    <string name="oem_more_help">More help for your phone model</string>
+    <string-array name="oem_xiaomi_steps">
+        <item>Open Settings, then Apps, then Manage apps, then Medicine Reminder.</item>
+        <item>Turn on Autostart.</item>
+        <item>Under Battery saver, choose No restrictions.</item>
+        <item>Open recent apps, pull down on the Medicine Reminder card and tap the lock icon.</item>
+    </string-array>
+    <string-array name="oem_realme_oppo_steps">
+        <item>Open Settings, then Battery, then Medicine Reminder, and allow background activity.</item>
+        <item>Open Settings, then App management, then Medicine Reminder, and turn on Auto launch.</item>
+        <item>Lock the app in recent apps if your phone offers it.</item>
+    </string-array>
+    <string-array name="oem_vivo_steps">
+        <item>Open Settings, then Battery, then Background power consumption, and allow Medicine Reminder.</item>
+        <item>Turn on Autostart for Medicine Reminder.</item>
+    </string-array>
+    <string-array name="oem_oneplus_steps">
+        <item>Open Settings, then Battery, then Battery optimisation, and choose Don\'t optimise for Medicine Reminder.</item>
+        <item>Allow Auto launch for Medicine Reminder.</item>
+        <item>Lock the app in recent apps.</item>
+    </string-array>
+    <string-array name="oem_samsung_steps">
+        <item>Open Settings, then Battery, then Background usage limits.</item>
+        <item>Remove Medicine Reminder from Sleeping apps and Deep sleeping apps.</item>
+        <item>Set battery usage for Medicine Reminder to Unrestricted.</item>
+    </string-array>
+    <string-array name="oem_huawei_steps">
+        <item>Open Settings, then Battery, then App launch, and set Medicine Reminder to Manage manually.</item>
+        <item>Allow Auto-launch, Secondary launch and Run in background.</item>
+    </string-array>
+    <string-array name="oem_other_steps">
+        <item>Open Settings, then Apps, then Medicine Reminder, then Battery, and choose Unrestricted.</item>
+        <item>Lock the app in recent apps if your phone offers it.</item>
+    </string-array>
+
+    <string name="disclaimer_title">Please note</string>
+    <string name="disclaimer_body">Medicine Reminder is a reminder aid, not medical advice. Follow your doctor\'s or pharmacist\'s instructions, and do not double a missed dose without asking them.</string>
+    <string name="privacy_line">Your data stays on this phone.</string>
+    <string name="onboarding_continue">Continue</string>
+
+    <!-- Banner on Today -->
+    <string name="banner_title">Reminders may not arrive</string>
+    <string name="banner_message">Notifications or alarms are turned off for this app.</string>
+    <string name="banner_action">Fix now</string>
+</resources>

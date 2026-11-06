@@ -1,16 +1,16 @@
 package com.nukebyt.medicinereminder.ui.nav
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Medication
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Medication
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -22,16 +22,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import com.nukebyt.medicinereminder.ui.medicines.EditMedicineScreen
-import com.nukebyt.medicinereminder.ui.medicines.MedicineListScreen
-import com.nukebyt.medicinereminder.ui.today.TodayScreen
-import com.nukebyt.medicinereminder.ui.util.SnackbarController
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -41,8 +35,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.nukebyt.medicinereminder.R
+import com.nukebyt.medicinereminder.alarm.PermissionStatus
+import com.nukebyt.medicinereminder.ui.medicines.EditMedicineScreen
+import com.nukebyt.medicinereminder.ui.medicines.MedicineListScreen
+import com.nukebyt.medicinereminder.ui.onboarding.OnboardingScreen
+import com.nukebyt.medicinereminder.ui.onboarding.PermissionBanner
 import com.nukebyt.medicinereminder.ui.theme.AppTheme
+import com.nukebyt.medicinereminder.ui.today.TodayScreen
+import com.nukebyt.medicinereminder.ui.util.SnackbarController
 import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
@@ -51,6 +53,7 @@ import kotlin.reflect.KClass
 @Serializable data object HistoryRoute
 @Serializable data object SettingsRoute
 @Serializable data class EditMedicineRoute(val medicineId: Long = 0L)
+@Serializable data class OnboardingRoute(val firstRun: Boolean = false)
 
 private data class Tab(
     val route: Any,
@@ -68,12 +71,18 @@ private val tabs = listOf(
 )
 
 @Composable
-fun AppNavHost(snackbarController: SnackbarController) {
+fun AppNavHost(
+    snackbarController: SnackbarController,
+    startWithOnboarding: Boolean,
+    permissionStatus: PermissionStatus,
+) {
     val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
     val destination = backStack?.destination
     val showBar = tabs.any { destination?.hasRoute(it.routeClass) == true }
     val snackbarHostState = remember { SnackbarHostState() }
+    // Fixed at first composition: finishing onboarding must not rebuild the graph and reset the back stack.
+    val start: Any = remember { if (startWithOnboarding) OnboardingRoute(firstRun = true) else TodayRoute }
 
     LaunchedEffect(snackbarController) {
         snackbarController.requests.collect { request ->
@@ -123,11 +132,18 @@ fun AppNavHost(snackbarController: SnackbarController) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = TodayRoute,
+            startDestination = start,
             modifier = Modifier.padding(innerPadding).consumeWindowInsets(innerPadding),
         ) {
             composable<TodayRoute> {
-                TodayScreen(onAddMedicine = { navController.navigate(EditMedicineRoute()) })
+                TodayScreen(
+                    onAddMedicine = { navController.navigate(EditMedicineRoute()) },
+                    banner = {
+                        if (permissionStatus.criticalMissing) {
+                            PermissionBanner(onFix = { navController.navigate(OnboardingRoute()) })
+                        }
+                    },
+                )
             }
             composable<MedicinesRoute> {
                 MedicineListScreen(
@@ -140,13 +156,26 @@ fun AppNavHost(snackbarController: SnackbarController) {
             composable<EditMedicineRoute> {
                 EditMedicineScreen(onBack = { navController.popBackStack() })
             }
+            composable<OnboardingRoute> { entry ->
+                val route = entry.toRoute<OnboardingRoute>()
+                OnboardingScreen(
+                    isFirstRun = route.firstRun,
+                    onDone = {
+                        navController.navigate(TodayRoute) {
+                            popUpTo<OnboardingRoute> { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    onBack = { navController.popBackStack() },
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun Placeholder(title: String) {
-    Box(Modifier, contentAlignment = Alignment.Center) {
+    androidx.compose.foundation.layout.Box(Modifier, contentAlignment = androidx.compose.ui.Alignment.Center) {
         Text(title, style = MaterialTheme.typography.headlineMedium)
     }
 }
