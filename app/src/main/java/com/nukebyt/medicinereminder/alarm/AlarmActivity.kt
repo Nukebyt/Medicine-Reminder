@@ -103,9 +103,9 @@ class AlarmActivity : ComponentActivity() {
                     AlarmScreen(
                         doses = current.doses,
                         snoozeMinutes = current.snoozeMinutes,
-                        onTook = { AlarmService.send(context, AlarmContract.ACTION_ALARM_TOOK) },
-                        onSnooze = { AlarmService.send(context, AlarmContract.ACTION_ALARM_SNOOZE) },
-                        onStop = { AlarmService.send(context, AlarmContract.ACTION_ALARM_STOP) },
+                        onTook = { AppLog.d("alarm screen: I took it"); AlarmService.send(context, AlarmContract.ACTION_ALARM_TOOK) },
+                        onSnooze = { AppLog.d("alarm screen: snooze"); AlarmService.send(context, AlarmContract.ACTION_ALARM_SNOOZE) },
+                        onStop = { AppLog.d("alarm screen: swipe to stop"); AlarmService.send(context, AlarmContract.ACTION_ALARM_STOP) },
                     )
                 }
             }

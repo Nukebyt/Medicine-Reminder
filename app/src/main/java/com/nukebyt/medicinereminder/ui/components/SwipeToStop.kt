@@ -1,6 +1,6 @@
 package com.nukebyt.medicinereminder.ui.components
 
-import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Icon
@@ -22,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.nukebyt.medicinereminder.ui.theme.AppShapes
 import com.nukebyt.medicinereminder.ui.theme.AppTheme
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 private const val STOP_THRESHOLD = 0.85f
@@ -57,7 +56,6 @@ fun SwipeToStop(
     modifier: Modifier = Modifier,
 ) {
     val colors = AppTheme.colors
-    val scope = rememberCoroutineScope()
     val haptics = LocalHapticFeedback.current
     val density = LocalDensity.current
     val thumb = 56.dp
@@ -66,7 +64,8 @@ fun SwipeToStop(
     val insetPx = with(density) { inset.toPx() }
     var trackWidthPx by remember { mutableFloatStateOf(0f) }
     val maxOffset = (trackWidthPx - thumbPx - insetPx * 2).coerceAtLeast(1f)
-    val offset = remember { Animatable(0f) }
+    // Drag position in px. Updated synchronously while dragging, so the value read on release is always current.
+    var dragPx by remember { mutableFloatStateOf(0f) }
     var done by remember { mutableFloatStateOf(0f) }
 
     fun finish() {
@@ -83,6 +82,8 @@ fun SwipeToStop(
             .height(72.dp)
             .clip(AppShapes.capsule)
             .background(colors.foil.copy(alpha = 0.35f))
+            // The thumb starts near the screen edge, where gesture navigation would otherwise treat the swipe as "back".
+            .systemGestureExclusion()
             .onSizeChanged { trackWidthPx = it.width.toFloat() }
             .semantics {
                 contentDescription = label
@@ -97,24 +98,26 @@ fun SwipeToStop(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(start = thumb)
-                .alpha(1f - (offset.value / maxOffset).coerceIn(0f, 1f)),
+                .alpha(1f - (dragPx / maxOffset).coerceIn(0f, 1f)),
         )
         Box(
             Modifier
-                .offset { IntOffset((insetPx + offset.value).roundToInt(), 0) }
+                .offset { IntOffset((insetPx + dragPx).roundToInt(), 0) }
                 .size(thumb)
                 .background(colors.paper, AppShapes.cell)
                 .draggable(
                     orientation = Orientation.Horizontal,
                     state = rememberDraggableState { delta ->
-                        scope.launch { offset.snapTo((offset.value + delta).coerceIn(0f, maxOffset)) }
+                        dragPx = (dragPx + delta).coerceIn(0f, maxOffset)
                     },
                     onDragStopped = {
-                        if (offset.value >= STOP_THRESHOLD * maxOffset) {
-                            offset.animateTo(maxOffset)
+                        if (dragPx >= STOP_THRESHOLD * maxOffset) {
+                            animate(dragPx, maxOffset) { value, _ -> dragPx = value }
                             finish()
                         } else {
-                            offset.animateTo(0f, spring(Spring.DampingRatioMediumBouncy, Spring.StiffnessMedium))
+                            animate(dragPx, 0f, animationSpec = spring(Spring.DampingRatioMediumBouncy, Spring.StiffnessMedium)) { value, _ ->
+                                dragPx = value
+                            }
                         }
                     },
                 ),

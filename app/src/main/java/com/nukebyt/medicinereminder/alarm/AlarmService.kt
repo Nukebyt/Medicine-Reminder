@@ -69,6 +69,7 @@ class AlarmService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        AppLog.d("alarm service command: ${intent?.action} (ringing=$ringing)")
         when (intent?.action) {
             AlarmContract.ACTION_ALARM_START -> {
                 val key = intent.slotKey()
